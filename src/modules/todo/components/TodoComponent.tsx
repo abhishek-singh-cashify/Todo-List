@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useCallback, useEffect} from "react";
 import '../../../App.css';
 import TodoItemComponent from "./TodoItemComponent";
 import {useState} from 'react'
@@ -8,19 +8,19 @@ const TodoComponent = () => {
     const [inputValue, setInputValue] = useState("")
     const [todos, setTodos] = useState<TodoItemModel[]>([])
 
-    function addTodos(dataModel: TodoItemModel) {
+    const addTodos = useCallback((dataModel: TodoItemModel) => {
         todos.push(dataModel)
         setTodos(todos)
-    }
+    }, [todos]);
 
-    function deleteTask(id: number) {
+    const deleteTask = useCallback((id: number) => {
         const newList = todos.filter((value) => {
             return value.taskId !== id;
         })
         setTodos(newList);
-    }
+    }, [todos])
 
-    function markTaskAsDone(id: number) {
+    const markTaskAsDone = useCallback((id: number) => {
         let index = todos.findIndex((value) => {
             return value.taskId === id;
         })
@@ -28,7 +28,7 @@ const TodoComponent = () => {
             todos[index].isFullFilled = !todos[index].isFullFilled;
         }
         setTodos(todos)
-    }
+    }, [todos])
 
 
     return (
